@@ -1,36 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProducts, addProduct, editProduct, deleteProduct } from '../services/api';
+import axios from 'axios';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
-    const [productToEdit, setProductToEdit] = useState(null); // Product being edited
-    const [newProduct, setNewProduct] = useState({ title: '', price: '', description: '' });
+    const [categories, setCategories] = useState([]);
+    const [productToEdit, setProductToEdit] = useState(null);
+    const [newProduct, setNewProduct] = useState({ title: '', price: '', description: '', category: '' });
     const [loading, setLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false); // Track if modal is open
-    const [isAddingProduct, setIsAddingProduct] = useState(false); // Toggle between Add/Edit modals
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddingProduct, setIsAddingProduct] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
-    // Fetch products on mount
     useEffect(() => {
+        // Fetch products
         fetchProducts()
             .then((response) => {
                 setProducts(response.data);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
+
+        // Fetch categories
+        axios
+            .get('https://fakestoreapi.com/products/categories')
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => console.error(error));
     }, []);
 
-    // Handle adding a new product
     const handleAddProduct = () => {
         addProduct(newProduct)
             .then((response) => {
                 setProducts([...products, response.data]);
-                setNewProduct({ title: '', price: '', description: '' });
-                setIsModalOpen(false); // Close modal after adding
+                setNewProduct({ title: '', price: '', description: '', category: '' });
+                setIsModalOpen(false);
             })
             .catch((error) => console.error(error));
     };
 
-    // Handle updating a product
     const handleEditProduct = () => {
         if (productToEdit) {
             editProduct(productToEdit.id, productToEdit)
@@ -39,13 +49,12 @@ const Products = () => {
                         product.id === response.data.id ? response.data : product
                     );
                     setProducts(updatedProducts);
-                    setIsModalOpen(false); // Close modal after editing
+                    setIsModalOpen(false);
                 })
                 .catch((error) => console.error(error));
         }
     };
 
-    // Handle deleting a product
     const handleDeleteProduct = (id) => {
         deleteProduct(id)
             .then(() => {
@@ -54,6 +63,20 @@ const Products = () => {
             .catch((error) => console.error(error));
     };
 
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e.target.value);
+    };
+
+    const filteredProducts = products.filter((product) => {
+        const matchesTitle = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
+        return matchesTitle && matchesCategory;
+    });
+
     return (
         <div>
             <h3>Products</h3>
@@ -61,18 +84,37 @@ const Products = () => {
                 <div>Loading...</div>
             ) : (
                 <div>
-                    {/* Button to open Add Product modal */}
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            placeholder="Search by title"
+                            className="form-control mb-2"
+                            value={searchQuery}
+                            onChange={handleSearch}
+                        />
+                        <select
+                            className="form-control"
+                            value={selectedCategory}
+                            onChange={handleCategoryChange}
+                        >
+                            <option value="">Select Category</option>
+                            {categories.map((category, index) => (
+                                <option key={index} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <button
                         className="btn btn-primary mb-3"
                         onClick={() => {
-                            setIsAddingProduct(true); // Set flag to show Add Product modal
-                            setIsModalOpen(true); // Open the modal
+                            setIsAddingProduct(true);
+                            setIsModalOpen(true);
                         }}
                     >
                         Add Product
                     </button>
 
-                    {/* Product table */}
                     <table className="table table-bordered">
                         <thead>
                             <tr>
@@ -80,39 +122,29 @@ const Products = () => {
                                 <th style={{ backgroundColor: '#808080' }}>Title</th>
                                 <th style={{ backgroundColor: '#808080' }}>Price</th>
                                 <th style={{ backgroundColor: '#808080' }}>Description</th>
+                                <th style={{ backgroundColor: '#808080' }}>Category</th>
                                 <th style={{ backgroundColor: '#808080' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((product) => (
+                            {filteredProducts.map((product) => (
                                 <tr key={product.id}>
-                                    <td style={{
-                                        backgroundColor: '#AEC6CF'
-                                    }}>{product.id}</td>
-                                    <td style={{
-                                        backgroundColor: '#AEC6CF'
-                                    }}>{product.title}</td>
-                                    <td style={{
-                                        backgroundColor: '#AEC6CF'
-                                    }}>${product.price}</td>
-                                    <td style={{
-                                        backgroundColor: '#AEC6CF'
-                                    }}>{product.description}</td>
-                                    <td style={{
-                                        backgroundColor: '#AEC6CF'
-                                    }}>
-                                        {/* Edit button with margin-right */}
+                                    <td style={{ backgroundColor: '#AEC6CF' }}>{product.id}</td>
+                                    <td style={{ backgroundColor: '#AEC6CF' }}>{product.title}</td>
+                                    <td style={{ backgroundColor: '#AEC6CF' }}>${product.price}</td>
+                                    <td style={{ backgroundColor: '#AEC6CF' }}>{product.description}</td>
+                                    <td style={{ backgroundColor: '#AEC6CF' }}>{product.category}</td>
+                                    <td style={{ backgroundColor: '#AEC6CF' }}>
                                         <button
-                                            className="btn btn-secondary btn-sm mb-3" // Added margin-right using me-3
+                                            className="btn btn-secondary btn-sm mb-3"
                                             onClick={() => {
-                                                setProductToEdit({ ...product }); // Set product to edit
-                                                setIsAddingProduct(false); // Set flag for Edit Product
-                                                setIsModalOpen(true); // Open modal for editing
+                                                setProductToEdit({ ...product });
+                                                setIsAddingProduct(false);
+                                                setIsModalOpen(true);
                                             }}
                                         >
                                             Edit
                                         </button>
-                                        {/* Remove button */}
                                         <button
                                             className="btn btn-secondary btn-sm"
                                             onClick={() => handleDeleteProduct(product.id)}
@@ -125,7 +157,6 @@ const Products = () => {
                         </tbody>
                     </table>
 
-                    {/* Modal for Add/Edit Product */}
                     {isModalOpen && (
                         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog">
                             <div className="modal-dialog" role="document">
@@ -134,7 +165,6 @@ const Products = () => {
                                         <h5 className="modal-title">
                                             {isAddingProduct ? 'Add Product' : 'Edit Product'}
                                         </h5>
-                                        {/* Removed the "X" close button */}
                                     </div>
                                     <div className="modal-body">
                                         <div className="mb-3">
@@ -184,6 +214,27 @@ const Products = () => {
                                                         : setProductToEdit({ ...productToEdit, description: e.target.value })
                                                 }
                                             />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label htmlFor="category" className="form-label">
+                                                Category
+                                            </label>
+                                            <select
+                                                id="category"
+                                                className="form-control"
+                                                value={isAddingProduct ? newProduct.category : productToEdit.category}
+                                                onChange={(e) =>
+                                                    isAddingProduct
+                                                        ? setNewProduct({ ...newProduct, category: e.target.value })
+                                                        : setProductToEdit({ ...productToEdit, category: e.target.value })
+                                                }
+                                            >
+                                                {categories.map((category, index) => (
+                                                    <option key={index} value={category}>
+                                                        {category}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="modal-footer">

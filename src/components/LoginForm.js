@@ -7,7 +7,7 @@ const LoginForm = ({ onLogin }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Simple hardcoded authentication (can be replaced with an API call)
+
         if (username === 'admin' && password === 'admin123') {
             onLogin();
         } else {
@@ -23,7 +23,7 @@ const LoginForm = ({ onLogin }) => {
             justifyContent: 'center',
             alignItems: 'center',
         }}>
-            < div className="container mt-5 d-flex flex-column justify-content-center align-items-center">
+            <div className="container mt-5 d-flex flex-column justify-content-center align-items-center">
                 <h3 className="text-center mb-4" style={{ width: '100%' }}>
                     Admin Login
                 </h3>
@@ -34,7 +34,6 @@ const LoginForm = ({ onLogin }) => {
                     backgroundColor: '#FAF9F6',
                 }}>
                     <form onSubmit={handleSubmit}>
-                        {/* Username field */}
                         <div className="form-group mb-4">
                             <input
                                 type="text"
@@ -46,8 +45,6 @@ const LoginForm = ({ onLogin }) => {
                                 required
                             />
                         </div>
-
-                        {/* Password field */}
                         <div className="form-group mb-4">
                             <input
                                 type="password"
@@ -59,15 +56,13 @@ const LoginForm = ({ onLogin }) => {
                                 required
                             />
                         </div>
-
-                        {/* Login button */}
                         <button type="submit" className="btn btn-primary w-100">
                             <b>Login</b>
                         </button>
                     </form>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
