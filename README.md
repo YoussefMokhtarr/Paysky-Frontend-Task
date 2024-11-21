@@ -5,19 +5,19 @@ This is the solution for the Paysky assessment task for the **Frontend Developer
 ## Steps to Start the React Project
 
 1. **Clone the Repository**:
-
+   ```bash
    git clone https://github.com/YoussefMokhtarr/Paysky-Frontend-Task.git
 
 2. **Navigate to the Project Folder**:
-   
+   ```bash
    cd paysky-frontend-task
 
 3. **Install Dependencies: Ensure you have Node.js installed. Then, run**:
-   
+   ```bash
    npm install
 
 4. **Start the React Development Server**:
-   
+   ```bash
    npm start
 
 This will start the development server and open the application in your default browser. The app will be running at http://localhost:3000.
