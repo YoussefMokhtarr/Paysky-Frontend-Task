@@ -1,0 +1,41 @@
+.products-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.products-button:hover {
+    background-color: #218838 !important;
+    color: white !important;
+}
+
+.products-button.active {
+    background-color: silver;
+    color: black;
+}
+
+.categories-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.categories-button:hover {
+    background-color: #218838 !important;
+    color: white !important;
+}
+
+.categories-button.active {
+    background-color: silver;
+    color: black;
+}
