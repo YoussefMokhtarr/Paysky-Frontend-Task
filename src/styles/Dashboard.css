@@ -1,7 +1,8 @@
 .products-button {
-    background-color: #28a745;
-    color: white;
+    background-color: #ADD8E6;
+    color: black;
     border: none;
+    border-radius: 0.5em;
     padding: 10px 15px;
     cursor: pointer;
     width: 100%;
@@ -10,19 +11,20 @@
 }
 
 .products-button:hover {
-    background-color: #218838 !important;
+    background-color: #436c7a !important;
     color: white !important;
 }
 
 .products-button.active {
-    background-color: silver;
-    color: black;
+    background-color: #28a745;
+    color: white;
 }
 
 .categories-button {
-    background-color: #28a745;
-    color: white;
+    background-color: #ADD8E6;
+    color: black;
     border: none;
+    border-radius: 0.5em;
     padding: 10px 15px;
     cursor: pointer;
     width: 100%;
@@ -30,12 +32,20 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.logout-btn {
+    background-color: #ff4137;
+}
+
+.logout-btn:hover {
+    background-color: red;
+}
+
 .categories-button:hover {
-    background-color: #218838 !important;
+    background-color: #436c7a !important;
     color: white !important;
 }
 
 .categories-button.active {
-    background-color: silver;
-    color: black;
+    background-color: #28a745;
+    color: white;
 }

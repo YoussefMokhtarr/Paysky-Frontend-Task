@@ -9,9 +9,8 @@ const Dashboard = ({ onLogout }) => {
     return (
         <div className="container-fluid">
             <div className="row vh-100">
-                {/* Sidebar */}
-                <aside className="col-md-3 bg-light border-end p-3">
-                    <h4>Admin Panel</h4>
+                <aside className="col-md-3 border-end p-3" style={{ backgroundColor: '#061E47' }}>
+                    <h4 style={{ color: 'white' }}>Admin Panel</h4>
                     <ul className="nav flex-column">
                         <li className="nav-item mb-2">
                             <button
@@ -32,13 +31,13 @@ const Dashboard = ({ onLogout }) => {
                             </button>
                         </li>
                     </ul>
-                    <button className="btn btn-danger mt-5 w-100" onClick={onLogout}>
+                    <button className="btn mt-5 w-100 logout-btn" onClick={onLogout}>
                         Log out
                     </button>
                 </aside>
 
 
-                <main className="col-md-9 p-4">
+                <main className="col-md-9 p-4" style={{ backgroundColor: '#cccbca' }}>
                     {activeSection === '' ? null : activeSection === 'Products' ? (
                         <Products />
                     ) : (
