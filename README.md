@@ -6,7 +6,7 @@ This is the solution for the Paysky assessment task for the **Frontend Developer
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/paysky-frontend-assessment.git
+   git clone https://github.com/YoussefMokhtarr/Paysky-Frontend-Task.git
 
 2. **Navigate to the Project Folder**:
    ```bash
